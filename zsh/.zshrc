@@ -155,6 +155,8 @@ fpath=(/path/to/homebrew/share/zsh-completions $fpath)
 autoload -U compinit
 compinit -u
 
+# nvm
+source ~/.nvm/nvm.sh
 
 # git
 export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
