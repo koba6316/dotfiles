@@ -39,3 +39,6 @@
 
 [core]
         excludesfile = /Users/a13025/.gitignore_global
+
+[credential]
+        helper = osxkeychain
