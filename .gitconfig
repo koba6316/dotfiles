@@ -36,3 +36,6 @@
         psd = push origin develop
         pss = push origin staging
         psm = push origin master
+
+[core]
+        excludesfile = /Users/a13025/.gitignore_global
