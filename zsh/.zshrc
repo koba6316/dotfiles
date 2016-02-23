@@ -161,6 +161,9 @@ source ~/.nvm/nvm.sh
 # git
 export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
 
+# gulp
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
 ########################################
 # OS 別の設定
 case ${OSTYPE} in

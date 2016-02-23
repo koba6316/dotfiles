@@ -17,7 +17,6 @@
         ft = fetch
         mg = merge
         bra = branch -a
-        brakoba = branch -a | grep koba
         pl = pull
         ps = push
         rb = rebase
@@ -42,3 +41,10 @@
 
 [credential]
         helper = osxkeychain
+[filter]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[lfs]
+	batch = false
+
