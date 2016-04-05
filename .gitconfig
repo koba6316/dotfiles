@@ -35,6 +35,8 @@
         psd = push origin develop
         pss = push origin staging
         psm = push origin master
+        dlocal = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | xargs git branch -D; };f"
+        dorigin = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | sed -e 's% *remotes/origin/%%' | xargs -I% git push origin :%; };f"
 
 [core]
         excludesfile = /Users/a13025/.gitignore_global
