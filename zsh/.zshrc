@@ -157,6 +157,7 @@ compinit -u
 
 # nvm
 source ~/.nvm/nvm.sh
+if [[ -s  /Users/a13025/.nvm/nvm.sh ]] ; then source  /Users/a13025/.nvm/nvm.sh ; fi
 
 # git
 export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
