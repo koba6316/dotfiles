@@ -168,6 +168,9 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # android SDK
 export PATH=$PATH:/Users/a13025/Library/Android/sdk/platform-tools
 
+# yarn
+export PATH="$PATH:`yarn global bin`"
+
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
