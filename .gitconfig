@@ -39,7 +39,12 @@
         dorigin = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | sed -e 's% *remotes/origin/%%' | xargs -I% git push origin :%; };f"
 
 [core]
-        excludesfile = /Users/a13025/.gitignore_global
+  excludesfile = /Users/a13025/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[pager]
+  diff = diff-so-fancy | less --tabs=4 -RFX
+  show = diff-so-fancy | less --tabs=4 -RFX
 
 [credential]
         helper = osxkeychain
@@ -50,3 +55,8 @@
 [lfs]
 	batch = false
 
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
