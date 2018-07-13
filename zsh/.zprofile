@@ -26,7 +26,9 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # android SDK
 export PATH=$PATH:/Users/a13025/Library/Android/sdk/platform-tools
 
+export GEM_HOME=~/extlib/gems
+export PATH=$PATH:/extlib/gems/bin/
+eval "$(rbenv init -)"
+
 # yarn
 # export PATH="$PATH:`yarn global bin`"
-
-

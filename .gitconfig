@@ -1,6 +1,6 @@
 [user]
-        name = kobayashi_masahiro
-        email = kobayashi_masahiro@cyberagent.co.jp
+	name = kobayashi_masahiro
+	email = kobayashi_masahiro@cyberagent.co.jp
 [color]
         diff = auto
         status = auto
