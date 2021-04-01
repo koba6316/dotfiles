@@ -15,7 +15,7 @@ if [[ -s  /Users/a13025/.nvm/nvm.sh ]] ; then source  /Users/a13025/.nvm/nvm.sh 
 # [[ -s ~/.nvm/nvm.sh ]] && . ~/.nvm/nvm.sh
 # nvm use default
 # npm_dir=${NVM_PATH}_modules
-# export NODE_PATH=$npm_dir
+export NODE_PATH=$npm_dir
 
 # git
 export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
@@ -31,4 +31,10 @@ export PATH=$PATH:/extlib/gems/bin/
 eval "$(rbenv init -)"
 
 # yarn
-# export PATH="$PATH:`yarn global bin`"
+export PATH=$PATH:`yarn global bin`
+
+# wp
+source "/usr/local/bin/wp-completion.bash"
+
+export NPM_TOKEN="e7918aea-2032-461a-af23-c30f663fcd07"
+export GITHUB_PERSONAL_ACCESS_TOKEN="8429d7ec3c26113580f3a467604f460cf5dcc50e"
