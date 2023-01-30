@@ -17,6 +17,9 @@ if [[ -s  /Users/a13025/.nvm/nvm.sh ]] ; then source  /Users/a13025/.nvm/nvm.sh 
 # npm_dir=${NVM_PATH}_modules
 export NODE_PATH=$npm_dir
 
+#npm
+export "PATH=~/.npm-global/bin:$PATH"
+
 # git
 export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
 
@@ -35,6 +38,12 @@ export PATH=$PATH:`yarn global bin`
 
 # wp
 source "/usr/local/bin/wp-completion.bash"
+
+# go
+# export PATH="$PATH:/usr/local/go/bin"
+# export "GOPATH=$HOME/go"
+# export "GOBIN=$GOPATH/bin"
+# export "PATH=$PATH:$GOBIN"
 
 export NPM_TOKEN="e7918aea-2032-461a-af23-c30f663fcd07"
 export GITHUB_PERSONAL_ACCESS_TOKEN="8429d7ec3c26113580f3a467604f460cf5dcc50e"
