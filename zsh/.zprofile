@@ -1,49 +1,21 @@
 # 環境変数
 export LANG=ja_JP.UTF-8
 
-# zsh-completions
-fpath=(/path/to/homebrew/share/zsh-completions $fpath)
+# nvm環境変数の設定
+export NVM_DIR="$HOME/.nvm"
 
-autoload -U compinit
-compinit -u
+# PATH設定（システム全体で必要なもの）
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# nvm
-source ~/.nvm/nvm.sh
-if [[ -s  /Users/a13025/.nvm/nvm.sh ]] ; then source  /Users/a13025/.nvm/nvm.sh ; fi
+# その他の環境変数
+export GEM_HOME=~/extlib/gems
 
-# nvm設定
-# [[ -s ~/.nvm/nvm.sh ]] && . ~/.nvm/nvm.sh
-# nvm use default
-# npm_dir=${NVM_PATH}_modules
-export NODE_PATH=$npm_dir
-
-#npm
-export "PATH=~/.npm-global/bin:$PATH"
-
-# git
-export PATH="/usr/local/Cellar/git/2.7.0/bin:$PATH"
-
-# gulp
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-
-# android SDK
+# Android SDK
 export PATH=$PATH:/Users/a13025/Library/Android/sdk/platform-tools
 
-export GEM_HOME=~/extlib/gems
-export PATH=$PATH:/extlib/gems/bin/
-eval "$(rbenv init -)"
+# Flutter
+export PATH="/Users/a13025/fvm/versions/3.24.3/bin:$PATH"
 
-# yarn
-export PATH=$PATH:`yarn global bin`
-
-# wp
-source "/usr/local/bin/wp-completion.bash"
-
-# go
-# export PATH="$PATH:/usr/local/go/bin"
-# export "GOPATH=$HOME/go"
-# export "GOBIN=$GOPATH/bin"
-# export "PATH=$PATH:$GOBIN"
-
-export NPM_TOKEN="e7918aea-2032-461a-af23-c30f663fcd07"
-export GITHUB_PERSONAL_ACCESS_TOKEN="8429d7ec3c26113580f3a467604f460cf5dcc50e"
+# zsh-completions
+fpath=(/opt/homebrew/share/zsh-completions $fpath)
