@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Zsh compiled files
+*.zwc
+*.zwc.old
+.zcompdump
+.zcompdump-*
+.zsh_history
+
+# Editor/IDE
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Local environment files (secrets)
+*.local
+.env
+.env.*
+!.env.example
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# OS generated
+Thumbs.db
+ehthumbs.db

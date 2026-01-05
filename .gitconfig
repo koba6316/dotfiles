@@ -13,7 +13,7 @@
         st = status
         ci = commit -a
         di = diff
-        br = brancha
+        br = branch
         ft = fetch
         mg = merge
         bra = branch -a
@@ -41,6 +41,7 @@
 [core]
   excludesfile = /Users/a13025/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	bare = false
 
 [pager]
   diff = diff-so-fancy | less --tabs=4 -RFX
