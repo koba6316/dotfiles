@@ -6,11 +6,24 @@
 # -----------------------------------------------------------------------------
 # Antigen（プラグイン管理）
 # -----------------------------------------------------------------------------
-source ~/antigen/antigen.zsh
-antigen use oh-my-zsh
-antigen bundle --loc=plugins/ssh-agent/ssh-agent.plugin.zsh
-antigen theme robbyrussell
-antigen apply
+if [ -f ~/antigen/antigen.zsh ]; then
+  source ~/antigen/antigen.zsh
+
+  # oh-my-zsh フレームワーク
+  antigen use oh-my-zsh
+
+  # プラグイン
+  antigen bundle git                      # git エイリアス・補完
+  antigen bundle ssh-agent                # SSH エージェント自動起動
+  antigen bundle zsh-users/zsh-autosuggestions      # コマンド候補表示
+  antigen bundle zsh-users/zsh-syntax-highlighting  # シンタックスハイライト
+
+  # テーマ
+  antigen theme robbyrussell
+
+  # 適用
+  antigen apply
+fi
 
 # -----------------------------------------------------------------------------
 # 補完設定
