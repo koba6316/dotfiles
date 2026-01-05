@@ -12,11 +12,25 @@ if [ -f ~/antigen/antigen.zsh ]; then
   # oh-my-zsh フレームワーク
   antigen use oh-my-zsh
 
-  # プラグイン
+  # プラグイン（oh-my-zsh 標準）
   antigen bundle git                      # git エイリアス・補完
+  antigen bundle z                        # ディレクトリ高速移動（z dirname）
+  antigen bundle docker                   # Docker 補完
+  antigen bundle docker-compose           # docker-compose 補完
+  antigen bundle node                     # Node.js 補完
+  antigen bundle npm                      # npm 補完・エイリアス
+  antigen bundle yarn                     # yarn 補完
+  antigen bundle brew                     # Homebrew 補完
+  antigen bundle vscode                   # VS Code 連携（code, vsc）
   antigen bundle ssh-agent                # SSH エージェント自動起動
-  antigen bundle zsh-users/zsh-autosuggestions      # コマンド候補表示
-  antigen bundle zsh-users/zsh-syntax-highlighting  # シンタックスハイライト
+  antigen bundle extract                  # あらゆる圧縮形式を extract で展開
+  antigen bundle copypath                 # カレントパスをクリップボードにコピー
+  antigen bundle copyfile                 # ファイル内容をクリップボードにコピー
+
+  # プラグイン（外部）
+  antigen bundle zsh-users/zsh-completions          # 追加の補完定義
+  antigen bundle zsh-users/zsh-autosuggestions      # コマンド候補表示（→で補完）
+  antigen bundle zsh-users/zsh-syntax-highlighting  # シンタックスハイライト（最後に配置）
 
   # テーマ
   antigen theme robbyrussell
