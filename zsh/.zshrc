@@ -6,7 +6,8 @@
 # -----------------------------------------------------------------------------
 # Antigen（プラグイン管理）
 # -----------------------------------------------------------------------------
-if [ -f ~/antigen/antigen.zsh ]; then
+if [ -f ~/antigen/antigen.zsh ] && [ -z "$ANTIGEN_LOADED" ]; then
+  export ANTIGEN_LOADED=1
   source ~/antigen/antigen.zsh
 
   # oh-my-zsh フレームワーク
@@ -17,7 +18,6 @@ if [ -f ~/antigen/antigen.zsh ]; then
   antigen bundle z                        # ディレクトリ高速移動（z dirname）
   antigen bundle docker                   # Docker 補完
   antigen bundle docker-compose           # docker-compose 補完
-  antigen bundle node                     # Node.js 補完
   antigen bundle npm                      # npm 補完・エイリアス
   antigen bundle yarn                     # yarn 補完
   antigen bundle brew                     # Homebrew 補完
