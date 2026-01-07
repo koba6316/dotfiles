@@ -49,5 +49,8 @@ export PATH="$PUB_CACHE/bin:$PATH"
 # Android SDK
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 
+# Ghostty
+export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
+
 # zsh-completions
 fpath=(/opt/homebrew/share/zsh-completions $fpath)
