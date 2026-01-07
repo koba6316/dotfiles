@@ -8,6 +8,10 @@
 # -----------------------------------------------------------------------------
 if [ -f ~/antigen/antigen.zsh ] && [ -z "$ANTIGEN_LOADED" ]; then
   export ANTIGEN_LOADED=1
+
+  # 静音モード（"already installed" メッセージを抑制）
+  ANTIGEN_LOG=/dev/null
+
   source ~/antigen/antigen.zsh
 
   # oh-my-zsh フレームワーク
