@@ -44,6 +44,7 @@ main() {
     create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
     create_symlink "$DOTFILES_DIR/zsh/.gemrc" "$HOME/.gemrc"
     create_symlink "$DOTFILES_DIR/zsh/.zprofile" "$HOME/.zprofile"
+    create_symlink "$DOTFILES_DIR/zsh/.zshenv" "$HOME/.zshenv"
 
     # Git設定
     create_symlink "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
