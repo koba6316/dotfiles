@@ -57,8 +57,9 @@ main() {
     # マシン固有の Git 設定（署名鍵など。Git 管理外）
     if [ ! -e "$HOME/.gitconfig.local" ]; then
         info "Creating ~/.gitconfig.local template..."
-        printf '# Machine-specific git config (not tracked by git)\n' > "$HOME/.gitconfig.local"
+        (umask 077; printf '# Machine-specific git config (not tracked by git)\n' > "$HOME/.gitconfig.local")
     fi
+    chmod 600 "$HOME/.gitconfig.local"
 
     # ローカル環境変数ファイルのテンプレート作成
     if [ ! -e "$HOME/.zshenv.local" ]; then
