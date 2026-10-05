@@ -1,6 +1,7 @@
 [user]
 	name = koba6316
 	email = m.kobayashi.0522@gmail.com
+	signingkey = /Users/a13025/.ssh/id_ed25519_signing.pub
 [color]
         diff = auto
         status = auto
@@ -66,3 +67,11 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[rerere]
+	enabled = true
