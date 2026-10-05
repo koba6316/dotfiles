@@ -1,6 +1,7 @@
 [user]
 	name = koba6316
 	email = m.kobayashi.0522@gmail.com
+	signingkey = ~/.ssh/id_ed25519_signing.pub
 [color]
         diff = auto
         status = auto
@@ -11,7 +12,7 @@
 
         co = checkout
         st = status
-        ci = commit -a
+        ci = commit
         di = diff
         br = branch
         ft = fetch
@@ -20,26 +21,24 @@
         pl = pull
         ps = push
         rb = rebase
-        brd = branch -D
+        brd = branch -d
+        defb = "!git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@'"
         cob = checkout -b
         ftp = fetch -p
         cod = checkout develop
         cos = checkout staging
-        com = checkout master
+        com = "!git checkout $(git defb)"
         pld = pull origin develop
         pls = pull origin staging
-        plm = pull origin master
+        plm = "!git pull origin $(git defb)"
         mgd = merge origin/develop
         mgs = merge origin/staging
-        mgm = merge origin/master
-        psd = push origin develop
-        pss = push origin staging
-        psm = push origin master
-        dlocal = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | xargs git branch -D; };f"
+        mgm = "!git merge origin/$(git defb)"
+        dlocal = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | xargs git branch -d; };f"
         dorigin = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | sed -e 's% *remotes/origin/%%' | xargs -I% git push origin :%; };f"
 
 [core]
-  excludesfile = /Users/a13025/.gitignore_global
+  excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	bare = false
 
@@ -49,10 +48,6 @@
 
 [credential]
         helper = osxkeychain
-[filter]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
 [lfs]
 	batch = false
 
@@ -66,3 +61,14 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+[rerere]
+	enabled = true
+[include]
+	# マシン固有の設定（Git 管理外）
+	path = ~/.gitconfig.local

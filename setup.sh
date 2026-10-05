@@ -49,6 +49,18 @@ main() {
     # Git設定
     create_symlink "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 
+    # プラグイン管理・ランタイム管理
+    mkdir -p "$HOME/.config/sheldon" "$HOME/.config/mise"
+    create_symlink "$DOTFILES_DIR/config/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
+    create_symlink "$DOTFILES_DIR/config/mise/config.toml" "$HOME/.config/mise/config.toml"
+
+    # マシン固有の Git 設定（署名鍵など。Git 管理外）
+    if [ ! -e "$HOME/.gitconfig.local" ]; then
+        info "Creating ~/.gitconfig.local template..."
+        (umask 077; printf '# Machine-specific git config (not tracked by git)\n' > "$HOME/.gitconfig.local")
+    fi
+    chmod 600 "$HOME/.gitconfig.local"
+
     # ローカル環境変数ファイルのテンプレート作成
     if [ ! -e "$HOME/.zshenv.local" ]; then
         info "Creating ~/.zshenv.local template..."
@@ -61,6 +73,7 @@ EOF
     fi
 
     info "Setup complete!"
+    info "ツールの導入: brew bundle --file=$DOTFILES_DIR/Brewfile"
 }
 
 main "$@"

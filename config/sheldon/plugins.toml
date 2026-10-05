@@ -1,0 +1,35 @@
+# Sheldon（プラグイン管理）。~/.config/sheldon/plugins.toml へ symlink。
+# .zshrc がこの定義から静的な読み込みスクリプトを生成・キャッシュする。
+shell = "zsh"
+
+[templates]
+# zsh-defer 経由で、プロンプト表示後に読み込む
+defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+
+# --- oh-my-zsh から実際に使っているものだけ個別に取得 ---
+[plugins.omz-git]          # git エイリアス（gst, gco 等）
+github = "ohmyzsh/ohmyzsh"
+use = ["lib/git.zsh", "plugins/git/git.plugin.zsh"]
+
+[plugins.omz-z]            # ディレクトリ高速移動
+github = "ohmyzsh/ohmyzsh"
+use = ["plugins/z/z.plugin.zsh"]
+
+[plugins.omz-extract]      # extract で圧縮ファイルを展開
+github = "ohmyzsh/ohmyzsh"
+use = ["plugins/extract/extract.plugin.zsh"]
+
+# --- 外部プラグイン ---
+# zsh-completions は brew 版を .zshrc で fpath に追加する（compinit より前に必要なため）
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+apply = ["defer"]
+
+# syntax-highlighting は必ず最後
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+apply = ["defer"]

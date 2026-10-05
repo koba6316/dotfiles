@@ -1,0 +1,8 @@
+# グローバルなランタイム定義（~/.config/mise/config.toml へ symlink）
+# nvm / rbenv / rvm / asdf はここへ一本化した。プロジェクト固有は各リポジトリの .mise.toml / .tool-versions に書く。
+[tools]
+node = "22.14.0"
+
+[settings]
+# .nvmrc / .node-version もそのまま読む
+idiomatic_version_file_enable_tools = ["node"]
