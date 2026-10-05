@@ -16,6 +16,9 @@ is_human() {
 : "${GITHUB_MCP_TOKEN:=$(security find-generic-password -s github-mcp-token -w 2>/dev/null)}"
 export GITHUB_MCP_TOKEN
 
+# Node 系ツールが使う CA bundle（Claude Code 用）
+[[ -r "$HOME/.local/share/claude/ca-bundle.pem" ]] && export NODE_EXTRA_CA_CERTS="$HOME/.local/share/claude/ca-bundle.pem"
+
 if ! is_human; then
   # AI 側: 対話・ページャを避ける
   export EDITOR=true PAGER=cat GIT_PAGER=cat

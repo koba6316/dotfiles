@@ -1,86 +1,64 @@
 # =============================================================================
-# .zshrc - インタラクティブシェル用（毎回読み込み）
-# プラグイン、補完、エイリアス、ツール初期化を記述
+# .zshrc - 人間の対話シェル専用
+# AI エージェントのシェルでは何も読まない（判定は .zshenv の is_human）
 # =============================================================================
-
-# AI エージェントのシェルでは人間向け設定（プラグイン・補完・プロンプト）を読まない
-# 判定は .zshenv の is_human()
 is_human || return 0
 
 # -----------------------------------------------------------------------------
-# Antigen（プラグイン管理）
+# 履歴・シェルオプション（oh-my-zsh が肩代わりしていた設定）
 # -----------------------------------------------------------------------------
-if [ -f ~/antigen/antigen.zsh ]; then
-  # 静音モード（"already installed" メッセージを抑制）
-  ANTIGEN_LOG=/dev/null
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt SHARE_HISTORY EXTENDED_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt AUTO_CD INTERACTIVE_COMMENTS
+export CLICOLOR=1
 
-  source ~/antigen/antigen.zsh
-
-  # oh-my-zsh フレームワーク
-  antigen use oh-my-zsh
-
-  # プラグイン（oh-my-zsh 標準）
-  antigen bundle git                      # git エイリアス・補完
-  antigen bundle z                        # ディレクトリ高速移動（z dirname）
-  antigen bundle docker                   # Docker 補完
-  antigen bundle docker-compose           # docker-compose 補完
-  antigen bundle npm                      # npm 補完・エイリアス
-  antigen bundle yarn                     # yarn 補完
-  antigen bundle brew                     # Homebrew 補完
-  antigen bundle vscode                   # VS Code 連携（code, vsc）
-  antigen bundle ssh-agent                # SSH エージェント自動起動
-  antigen bundle extract                  # あらゆる圧縮形式を extract で展開
-  antigen bundle copypath                 # カレントパスをクリップボードにコピー
-  antigen bundle copyfile                 # ファイル内容をクリップボードにコピー
-
-  # プラグイン（外部）
-  antigen bundle zsh-users/zsh-completions          # 追加の補完定義
-  antigen bundle zsh-users/zsh-autosuggestions      # コマンド候補表示（→で補完）
-  antigen bundle zsh-users/zsh-syntax-highlighting  # シンタックスハイライト（最後に配置）
-
-  # テーマ
-  antigen theme robbyrussell
-
-  # 適用
-  antigen apply
+# -----------------------------------------------------------------------------
+# プラグイン（Sheldon: 定義は config/sheldon/plugins.toml）
+# 生成スクリプトをキャッシュし、plugins.toml 更新時だけ再生成する
+# -----------------------------------------------------------------------------
+if command -v sheldon >/dev/null 2>&1; then
+  _sheldon_toml="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
+  _sheldon_cache="${XDG_CACHE_HOME:-$HOME/.cache}/sheldon/sheldon.zsh"
+  if [[ ! -r $_sheldon_cache || $_sheldon_toml -nt $_sheldon_cache ]]; then
+    mkdir -p "${_sheldon_cache:h}"
+    sheldon source > "$_sheldon_cache"
+  fi
+  source "$_sheldon_cache"
+  unset _sheldon_toml _sheldon_cache
+else
+  print -u2 "sheldon が未導入です: brew install sheldon"
 fi
 
 # -----------------------------------------------------------------------------
-# 補完設定
+# 補完（dump は 1 日 1 回だけ再生成し、普段はキャッシュを使う）
 # -----------------------------------------------------------------------------
-autoload -U compinit
-compinit -u
-
-# -----------------------------------------------------------------------------
-# ツール初期化（インタラクティブシェルで必要なもの）
-# -----------------------------------------------------------------------------
-
-# nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-nvm use 22.14.0 > /dev/null 2>&1 || true
-
-# rbenv
-if command -v rbenv >/dev/null 2>&1; then
-  eval "$(rbenv init -)"
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
 fi
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# rvm
-if [ -s "$HOME/.rvm/scripts/rvm" ]; then
-  source "$HOME/.rvm/scripts/rvm"
-  export PATH="$HOME/.rvm/bin:$PATH"
-fi
+# -----------------------------------------------------------------------------
+# プロンプト（robbyrussell 風。外部テーマに依存しない）
+# -----------------------------------------------------------------------------
+autoload -Uz vcs_info add-zsh-hook
+add-zsh-hook precmd vcs_info
+zstyle ':vcs_info:git:*' formats ' %F{blue}git:(%F{red}%b%F{blue})%f'
+setopt PROMPT_SUBST
+PROMPT='%(?:%F{green}➜ :%F{red}➜ ) %F{cyan}%c%f${vcs_info_msg_0_} '
 
-# asdf
+# -----------------------------------------------------------------------------
+# ランタイム管理（mise に一本化: node / go / uv など）
+# -----------------------------------------------------------------------------
+command -v mise >/dev/null 2>&1 && eval "$(mise activate zsh)"
+
+# uv など ~/.local/bin の環境設定
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
-[ -x "$(command -v brew)" ] && [ -f "$(brew --prefix asdf)/libexec/asdf.sh" ] && source "$(brew --prefix asdf)/libexec/asdf.sh"
-
-# mise
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
-fi
 
 # Dart completion
 [[ -f ~/.dart-cli-completion/zsh-config.zsh ]] && . ~/.dart-cli-completion/zsh-config.zsh
@@ -90,21 +68,11 @@ fi
 # -----------------------------------------------------------------------------
 alias flutter="fvm flutter"
 
-# -----------------------------------------------------------------------------
-# プロジェクト固有設定（カレントディレクトリ依存）
-# -----------------------------------------------------------------------------
-# FVM使用時のプロジェクト用（必要に応じてコメント解除）
-# [ -d ".fvm/flutter_sdk" ] && export PATH="$(pwd)/.fvm/flutter_sdk/bin:$PATH"
+# multi-agent-kairai
+alias css='cd "$HOME/multi-agent-kairai" && ./mission_start.sh'
+alias csm='cd "$HOME/multi-agent-kairai"'
 
 # -----------------------------------------------------------------------------
 # ローカル設定（機密情報用、Git管理外）
 # -----------------------------------------------------------------------------
 [ -f ~/.zshenv.local ] && source ~/.zshenv.local
-
-# Added by Antigravity
-export PATH="/Users/a13025/.antigravity/antigravity/bin:$PATH"
-
-# multi-agent-kairai aliases (added by first_setup.sh)
-alias css='cd "/Users/a13025/multi-agent-kairai" && ./mission_start.sh'
-alias csm='cd "/Users/a13025/multi-agent-kairai"'
-export NODE_EXTRA_CA_CERTS="$HOME/.local/share/claude/ca-bundle.pem"
