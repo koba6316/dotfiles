@@ -1,7 +1,7 @@
 [user]
 	name = koba6316
 	email = m.kobayashi.0522@gmail.com
-	signingkey = /Users/a13025/.ssh/id_ed25519_signing.pub
+	signingkey = ~/.ssh/id_ed25519_signing.pub
 [color]
         diff = auto
         status = auto
@@ -40,7 +40,7 @@
         dorigin = "!f () { git checkout develop; git branch --merged origin/staging | grep koba | sed -e 's% *remotes/origin/%%' | xargs -I% git push origin :%; };f"
 
 [core]
-  excludesfile = /Users/a13025/.gitignore_global
+  excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	bare = false
 
@@ -50,10 +50,6 @@
 
 [credential]
         helper = osxkeychain
-[filter]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
 [lfs]
 	batch = false
 
@@ -75,3 +71,6 @@
 	gpgsign = true
 [rerere]
 	enabled = true
+[include]
+	# マシン固有の設定（Git 管理外）
+	path = ~/.gitconfig.local
