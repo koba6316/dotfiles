@@ -54,3 +54,6 @@ export PATH="/Applications/Ghostty.app/Contents/MacOS:$PATH"
 
 # zsh-completions
 fpath=(/opt/homebrew/share/zsh-completions $fpath)
+
+# AI エージェント: .zshenv で足した mise shim を path_helper / brew の後でも先頭に保つ
+is_human || { typeset -U path; path=("$HOME/.local/share/mise/shims" $path) }
