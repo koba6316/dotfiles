@@ -96,3 +96,11 @@ alias flutter="fvm flutter"
 # ローカル設定（機密情報用、Git管理外）
 # -----------------------------------------------------------------------------
 [ -f ~/.zshenv.local ] && source ~/.zshenv.local
+
+# Added by Antigravity
+export PATH="/Users/a13025/.antigravity/antigravity/bin:$PATH"
+
+# multi-agent-kairai aliases (added by first_setup.sh)
+alias css='cd "/Users/a13025/multi-agent-kairai" && ./mission_start.sh'
+alias csm='cd "/Users/a13025/multi-agent-kairai"'
+export NODE_EXTRA_CA_CERTS="$HOME/.local/share/claude/ca-bundle.pem"
