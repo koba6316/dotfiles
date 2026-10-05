@@ -1,92 +1,56 @@
 # dotfiles
 
-macOS 用の個人設定ファイル集。
+macOS 用の個人設定ファイル集。 AI エージェント（Claude Code など）が主なシェル利用者である前提で、**デフォルトは AI 、人間向けの設定は opt-in** にしている。
 
 ## インストール
 
 ```bash
-# リポジトリをクローン
 git clone https://github.com/koba6316/dotfiles.git ~/dotfiles
-
-# Antigen をインストール（未インストールの場合）
-git clone https://github.com/zsh-users/antigen.git ~/antigen
-
-# セットアップ実行
 cd ~/dotfiles
-./setup.sh
+brew bundle --file=Brewfile   # sheldon / mise などを導入
+./setup.sh                    # symlink を作成（既存ファイルは .backup.* に退避）
 ```
 
 ## 構成
 
 ```
 dotfiles/
-├── .gitconfig      # Git 設定（エイリアス、diff-so-fancy）
-├── .gitignore      # dotfiles 用 gitignore
-├── setup.sh        # セットアップスクリプト
-├── README.md
+├── Brewfile                    # 導入するツール
+├── setup.sh                    # symlink 作成スクリプト
+├── .gitconfig                  # Git 設定（マシン固有は ~/.gitconfig.local）
+├── config/
+│   ├── mise/config.toml        # ランタイム定義（~/.config/mise/）
+│   └── sheldon/plugins.toml    # zsh プラグイン定義（~/.config/sheldon/）
 └── zsh/
-    ├── .zprofile   # ログイン時設定（環境変数、PATH）
-    ├── .zshrc      # シェル起動時設定（プラグイン、エイリアス）
-    └── .gemrc      # Ruby gem 設定
+    ├── .zshenv                 # 全シェル: is_human 判定・共有環境変数
+    ├── .zprofile               # ログイン: PATH ・環境変数
+    ├── .zshrc                  # 人間の対話シェル専用
+    └── .gemrc
 ```
 
-## 機能
+## AI / 人間の出し分け
 
-### Zsh プラグイン（Antigen 経由）
+`.zshenv` の `is_human()` が、 TTY があり、かつ `AI_AGENT` / `CLAUDECODE` 等がないときだけ人間と判定する。
 
-| プラグイン | 機能 |
-|-----------|------|
-| git | `gst`, `gco`, `gp` 等のエイリアス |
-| z | `z dirname` でディレクトリ高速移動 |
-| docker / docker-compose | コンテナ関連の補完 |
-| node / npm / yarn | Node.js エコシステムの補完 |
-| brew | Homebrew 補完 |
-| vscode | `code .` で VS Code 起動 |
-| ssh-agent | SSH エージェント自動起動 |
-| extract | `extract file.tar.gz` で何でも展開 |
-| copypath / copyfile | クリップボード連携 |
-| zsh-autosuggestions | コマンド候補をグレー表示（→ で補完） |
-| zsh-syntax-highlighting | コマンドの色分け |
+| | AI シェル | 人間シェル |
+|---|---|---|
+| `.zshrc` | 早期 return（起動 約 0.02 秒） | プラグイン・補完・プロンプトを読む |
+| `EDITOR` / `PAGER` | `true` / `cat`（対話を避ける） | 通常 |
+| ランタイム | mise の shim を PATH に置く | `mise activate zsh` |
 
-### Git エイリアス
+## ツール
 
-```bash
-git st          # status
-git co          # checkout
-git br          # branch
-git ci          # commit -a
-git pl          # pull
-git ps          # push
-git cod         # checkout develop
-git com         # checkout master
-```
+- **プラグイン管理**: Sheldon（`zsh-defer` で遅延ロード）。 oh-my-zsh は使わず、 git / z / extract だけ個別に取得する。
+- **ランタイム管理**: mise に一本化（nvm / rbenv / rvm / asdf は廃止）。`.nvmrc` は読み込まれるが、未導入のバージョンは `mise install` が必要。
+- **Flutter**: fvm 。
 
-### バージョン管理ツール
+## 機密情報・マシン固有設定
 
-以下のツールに対応（インストール済みの場合のみ有効化）:
+Git 管理外のファイルに書く。
 
-- nvm (Node.js)
-- rbenv / rvm (Ruby)
-- asdf
-- mise
-- fvm (Flutter)
-
-## 機密情報の管理
-
-API キーなどの機密情報は `~/.zshenv.local` に記述してください（Git 管理外）。
-
-```bash
-# ~/.zshenv.local
-export LINEAR_API_KEY="your-api-key"
-export GITHUB_TOKEN="your-token"
-```
+- `~/.zshenv.local`: API キーなどの環境変数
+- `~/.gitconfig.local`: `user.signingkey` の上書きなど
 
 ## 前提条件
 
-- macOS (Apple Silicon)
-- Homebrew
-- Zsh（macOS デフォルト）
-
-## カスタマイズ
-
-ローカル固有の設定は `~/.zshenv.local` に追加することで、Git 管理外で設定できます。
+macOS (Apple Silicon) / Homebrew / Zsh
