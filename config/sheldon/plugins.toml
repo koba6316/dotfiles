@@ -23,10 +23,7 @@ github = "ohmyzsh/ohmyzsh"
 use = ["plugins/extract/extract.plugin.zsh"]
 
 # --- 外部プラグイン ---
-[plugins.zsh-completions]  # compinit より前に fpath へ入れる
-github = "zsh-users/zsh-completions"
-dir = "src"
-apply = ["fpath"]
+# zsh-completions は brew 版を .zshrc で fpath に追加する（compinit より前に必要なため）
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"

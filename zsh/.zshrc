@@ -15,6 +15,20 @@ setopt AUTO_CD INTERACTIVE_COMMENTS
 export CLICOLOR=1
 
 # -----------------------------------------------------------------------------
+# 補完（プラグインが compdef を呼ぶため、プラグインより前に初期化する）
+# dump は 1 日 1 回だけ再生成し、普段はキャッシュを使う
+# -----------------------------------------------------------------------------
+fpath=(/opt/homebrew/share/zsh-completions $fpath)   # brew: zsh-completions
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# -----------------------------------------------------------------------------
 # プラグイン（Sheldon: 定義は config/sheldon/plugins.toml）
 # 生成スクリプトをキャッシュし、plugins.toml 更新時だけ再生成する
 # -----------------------------------------------------------------------------
@@ -30,18 +44,6 @@ if command -v sheldon >/dev/null 2>&1; then
 else
   print -u2 "sheldon が未導入です: brew install sheldon"
 fi
-
-# -----------------------------------------------------------------------------
-# 補完（dump は 1 日 1 回だけ再生成し、普段はキャッシュを使う）
-# -----------------------------------------------------------------------------
-autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
-  compinit -C
-fi
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # -----------------------------------------------------------------------------
 # プロンプト（robbyrussell 風。外部テーマに依存しない）
