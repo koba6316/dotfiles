@@ -6,9 +6,7 @@
 # -----------------------------------------------------------------------------
 # Antigen（プラグイン管理）
 # -----------------------------------------------------------------------------
-if [ -f ~/antigen/antigen.zsh ] && [ -z "$ANTIGEN_LOADED" ]; then
-  export ANTIGEN_LOADED=1
-
+if [ -f ~/antigen/antigen.zsh ]; then
   # 静音モード（"already installed" メッセージを抑制）
   ANTIGEN_LOG=/dev/null
 
