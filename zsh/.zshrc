@@ -20,11 +20,13 @@ export CLICOLOR=1
 # -----------------------------------------------------------------------------
 fpath=(/opt/homebrew/share/zsh-completions $fpath)   # brew: zsh-completions
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))   # 24 時間より古ければ要素が入る
+if (( $#_zcompdump_stale )); then
   compinit
 else
   compinit -C
 fi
+unset _zcompdump_stale
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
