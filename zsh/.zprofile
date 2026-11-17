@@ -50,3 +50,11 @@ path=("$HOME/.antigravity/antigravity/bin" $path)
 
 # AI エージェント: .zshenv で足した mise shim を path_helper / brew の後でも先頭に保つ
 is_human || path=("$HOME/.local/share/mise/shims" $path)
+
+# Setting PATH for Python 3.13
+# The original version is saved in .zprofile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.13/bin:${PATH}"
+export PATH
+
+# banner-creative（bannerclip.app）が使う Python を 3.13 に固定する
+export PYTHON_BIN=/usr/local/bin/python3.13
