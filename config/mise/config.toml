@@ -1,8 +1,89 @@
-# グローバルなランタイム定義（~/.config/mise/config.toml へ symlink）
-# nvm / rbenv / rvm / asdf はここへ一本化した。プロジェクト固有は各リポジトリの .mise.toml / .tool-versions に書く。
+# グローバルな mise 設定 (~/.config/mise/config.toml)
+# 役割: ランタイム定義 + マシンセットアップ (mise bootstrap) の宣言
+# 手順: mise bootstrap --dry-run で確認してから mise bootstrap を実行する
+# 注意: mise bootstrap packages prune は使わない (fvm の receipt が旧 tap のままで mise が Ruby 3 を要求し失敗する。
+#       解消するには brew reinstall fvm で receipt を更新してから prune --dry-run で再確認すること)
+
+# ── ランタイム (既存) ──────────────────────────────
+# nvm / rbenv / rvm はここへ一本化した (asdf は dart/flutter/ruby 用に当面残している)。プロジェクト固有は各リポジトリの .mise.toml / .tool-versions に書く。
 [tools]
 node = "22.14.0"
 
 [settings]
 # .nvmrc / .node-version もそのまま読む
 idiomatic_version_file_enable_tools = ["node"]
+
+# ── Homebrew tap (formula が tap 由来のものだけ) ──────
+[bootstrap.brew.taps]
+"coderabbitai/tap" = "https://github.com/coderabbitai/homebrew-tap.git"
+"microsoft/apm"    = "https://github.com/microsoft/homebrew-apm.git"
+"perman/tap"       = "https://github.com/perman/homebrew-tap.git"
+
+# ── パッケージ ───────────────────────────────────
+# brew: は latest 固定のみ。バージョンはピン留めできない。
+[bootstrap.packages]
+# シェル環境
+"brew:zsh"              = "latest"
+"brew:zsh-completions"  = "latest"
+"brew:sheldon"          = "latest"   # zsh プラグイン管理 (定義は dotfiles の plugins.toml)
+"brew:mise"             = "latest"
+"brew:coreutils"        = "latest"
+"brew:curl"             = "latest"
+"brew:tmux"             = "latest"
+# 検索・CLI
+"brew:ripgrep"          = "latest"
+"brew:fd"               = "latest"
+"brew:jq"               = "latest"
+"brew:poppler"          = "latest"
+"brew:webp"             = "latest"
+# Git / GitHub
+"brew:git"              = "latest"
+"brew:git-lfs"          = "latest"
+"brew:diff-so-fancy"    = "latest"
+"brew:gh"               = "latest"
+"brew:gitleaks"         = "latest"
+"brew:pre-commit"       = "latest"
+"brew:coderabbitai/tap/git-gtr" = "latest"
+# CI / セキュリティ
+"brew:actionlint"       = "latest"
+"brew:ghalint"          = "latest"
+"brew:mkcert"           = "latest"
+# クラウド
+"brew:awscli"           = "latest"
+"brew:perman/tap/perman-aws-vault" = "latest"
+"brew:googleworkspace-cli" = "latest"
+# 言語・ツールチェーン (python は pre-commit / gcloud-cli の依存として brew が解決)
+"brew:asdf"             = "latest"   # 使用中: dart/flutter/ruby。mise は .tool-versions を読めるので動作確認後に廃止可
+"brew:tfenv"            = "latest"   # 使用中: terraform 0.13.7/0.14.11/1.15.8。mise [tools] terraform へ移行後に廃止 (別タスク)
+"brew:uv"               = "latest"
+"brew:yarn"             = "latest"
+"brew:fvm"              = "latest"   # homebrew/core 由来 (tap 不要)
+# AI / その他
+"brew:llama.cpp"        = "latest"
+"brew:microsoft/apm/apm" = "latest"
+# Cask
+"brew-cask:ghostty"     = { os = "macos" }
+"brew-cask:codex"       = { os = "macos" }
+"brew-cask:gcloud-cli"  = { os = "macos" }
+
+# ── 判断済み / 非対応 (宣言しない) ─────────────────
+# 外した: nvm (未使用。.nvmrc は [settings] idiomatic_version_file で読める) / pipx (空) /
+#         python@3.14, libyaml, pcre2 (依存のみ。brew が解決する)
+# tap 不要: leoafarias/fvm, btwld/fvm (fvm は homebrew/core 由来)
+# xurl (cask): xdevplatform/tap の未信頼 tap 由来で mise は 404 (prune 側でも "Homebrew owns this cask")。
+#   → 手動: brew trust xdevplatform/tap && brew install --cask xdevplatform/tap/xurl
+# mas (App Store): 非対応。
+
+# ── dotfiles (setup.sh の symlink を置き換え) ─────────
+# source は ~/dotfiles 配下を絶対寄りで指定 (symlink 越しの相対解決を避ける)
+# 秘密情報の *.local (.zshenv.local / .gitconfig.local) は管理しない (.gitignore 済み)
+[dotfiles]
+"~/.zshrc"      = { source = "~/dotfiles/zsh/.zshrc" }
+"~/.zprofile"   = { source = "~/dotfiles/zsh/.zprofile" }
+"~/.zshenv"     = { source = "~/dotfiles/zsh/.zshenv" }
+"~/.gemrc"      = { source = "~/dotfiles/zsh/.gemrc" }
+"~/.gitconfig"  = { source = "~/dotfiles/.gitconfig" }
+"~/.config/sheldon/plugins.toml" = { source = "~/dotfiles/config/sheldon/plugins.toml" }
+
+# mise_shell_activate は有効にしない:
+#   .zshrc:62 の eval "$(mise activate zsh)" と .zshenv/.zprofile の shim PATH があり、二重 activate を避ける。
