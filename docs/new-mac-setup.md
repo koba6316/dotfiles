@@ -30,8 +30,9 @@ mise の機能は `bootstrap` の `packages` / `dotfiles` / `tools` だけを使
 5. 宣言の適用
    ```bash
    mise bootstrap --dry-run   # 内容を確認する
-   mise bootstrap             # brew 32 件 + cask 3 件 + tap + ツールを導入
+   mise bootstrap             # brew 32 件 + cask 3 件 + tap + macOS 設定 + ツールを導入
    ```
+   - macOS 設定は Finder の隠しファイル表示 (`AppleShowAllFiles`) 。適用後に `post-defaults` フックで Finder が再起動する (bootstrap のたびに実行される) 。
    - 途中で失敗してもロールバックされない。原因を直して再実行すればよい (宣言部分は冪等) 。
 6. 手動で行うもの (下表) を済ませ、新しいシェルを開く
 7. 「完了確認」を実行する
