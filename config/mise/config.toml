@@ -85,5 +85,16 @@ idiomatic_version_file_enable_tools = ["node"]
 "~/.gitconfig"  = { source = "~/dotfiles/.gitconfig" }
 "~/.config/sheldon/plugins.toml" = { source = "~/dotfiles/config/sheldon/plugins.toml" }
 
+# ── macOS 設定 (defaults write 相当) ──────────────────
+# Finder は再起動しないと反映されないため、post-defaults フックで killall する。
+# フックは bootstrap のたびに実行される (冪等。Finder が再起動するだけ)。
+# 書式: mise 2026.10.2 は新書式 [bootstrap.settings.macos] を知らず警告が出るため、旧書式 [bootstrap.macos.defaults] を使う。
+#       公式によると旧書式は 2027 年に警告開始。mise 更新後に [bootstrap.settings.macos.finder] show_all_files = true へ移行する。
+[bootstrap.macos.defaults]
+"com.apple.finder" = { AppleShowAllFiles = true }   # 隠しファイルを表示 (defaults write com.apple.finder AppleShowAllFiles -boolean true)
+
+[bootstrap.hooks]
+post-defaults = "killall Finder || true"
+
 # mise_shell_activate は有効にしない:
 #   .zshrc:62 の eval "$(mise activate zsh)" と .zshenv/.zprofile の shim PATH があり、二重 activate を避ける。
