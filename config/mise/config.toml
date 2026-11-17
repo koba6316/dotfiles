@@ -5,7 +5,7 @@
 #       解消するには brew reinstall fvm で receipt を更新してから prune --dry-run で再確認すること)
 
 # ── ランタイム (既存) ──────────────────────────────
-# nvm / rbenv / rvm / asdf はここへ一本化した。プロジェクト固有は各リポジトリの .mise.toml / .tool-versions に書く。
+# nvm / rbenv / rvm はここへ一本化した (asdf は dart/flutter/ruby 用に当面残している)。プロジェクト固有は各リポジトリの .mise.toml / .tool-versions に書く。
 [tools]
 node = "22.14.0"
 
