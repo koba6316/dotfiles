@@ -99,6 +99,13 @@ echo $PYTHON_BIN && test -x "$PYTHON_BIN" && echo ok
 
 ## 未検証 / TODO (Mac を入れ替えるときに確認する)
 
+**消化のルール** (Mac 入れ替え時に人間と AI が従う):
+
+1. 新しい Mac で手順 A を実行しながら、下の項目を上から順に確認する。
+2. 確認できた項目は `[x]` にし、結果 (問題・差分・手順の修正点) をこのファイルに反映する PR を出す。
+3. 確認できなかった項目は理由を添えて残す。
+4. **全項目が済んだら** `setup.sh` と `Brewfile` を廃止する (別 PR) 。それまでは新 Mac での保険として残す。
+
 - [ ] **手順 A の通し実行** (新しい Mac での初回。これまでは今のマシンでの dry-run のみ)
 - [ ] `brew upgrade mise` の後、偽 HOME で手順 B を dry-run 検証する
   ```bash
@@ -109,6 +116,7 @@ echo $PYTHON_BIN && test -x "$PYTHON_BIN" && echo ok
 - [ ] `brew reinstall fvm` の後に `prune --dry-run` を再確認する
 - [ ] tfenv → mise の terraform 、 asdf → mise への移行 (別タスク)
 - [ ] App Store アプリと `xurl` の棚卸し
+- [ ] mise 更新後、 macOS 設定を新書式へ移行する (`[bootstrap.macos.defaults]` → `[bootstrap.settings.macos.finder] show_all_files = true`。旧書式の警告は 2027 年開始)
 
 ## 参考 (公式)
 
