@@ -18,3 +18,7 @@ macOS 用の個人設定ファイル集。構成は `README.md`、新 Mac の手
 - `*.local` (`~/.zshenv.local` `~/.gitconfig.local`) は機密のため触らない・コミットしない。
 - `.zshenv` の `is_human()` により、 AI シェルは `.zshrc` を早期 return する。`.zshrc` に AI でも必要な設定を書かない (共有環境変数は `.zshenv`) 。
 - `curl ... | sh` 系の導入スクリプトは AI が実行せず、人間に依頼する。
+
+## Mac 入れ替え時
+
+`docs/new-mac-setup.md` の手順 A を実行し、末尾の「未検証 / TODO 」を**消化のルールに従って上から順に確認する**。確認結果は同ファイルに反映する PR を出す (確認できなかった項目は理由を添えて残す) 。
